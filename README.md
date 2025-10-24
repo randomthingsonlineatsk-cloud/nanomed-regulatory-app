@@ -15,13 +15,6 @@ A React + Flask web app providing:
 
 ---
 
-# Nanomedicine Regulatory Guide — India & Global Comparison
-
-**App created by: Khan Gulrez & Shagufa Fazal Ahmed**
-
-An interactive **React-based dashboard** providing comprehensive **India-focused nanomedicine regulatory guidance** with **global regulator comparisons**, **color-coded timeline**, **CMC checklists**, and **print/export-friendly features**. Built with **Tailwind CSS** for a clean, responsive, and modern UI.
-
----
 
 ## Features
 
@@ -54,12 +47,3 @@ An interactive **React-based dashboard** providing comprehensive **India-focused
   - Rounded cards, shadows, responsive layout, readable typography
 
 ---
-
-
-## Installation
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/yourusername/nanomed-regulatory-app.git
-cd nanomed-regulatory-app
