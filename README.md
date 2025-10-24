@@ -43,7 +43,3 @@ A React + Flask web app providing:
 - **Print / Export Friendly**
   - One-click print or save as PDF
 
-- **Tailwind CSS**
-  - Rounded cards, shadows, responsive layout, readable typography
-
----
