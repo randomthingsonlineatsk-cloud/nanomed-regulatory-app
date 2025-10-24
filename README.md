@@ -15,3 +15,8 @@ A React + Flask web app providing:
 
 ---
 
+src/
+├── components/
+│   └── NanomedRegulatoryApp.jsx   # Main dashboard component
+├── index.js
+└── tailwind.css
