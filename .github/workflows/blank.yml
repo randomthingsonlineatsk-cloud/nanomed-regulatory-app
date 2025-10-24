@@ -1,0 +1,191 @@
+import React, { useState } from 'react';
+
+// Final integrated React component with:
+// - India-focused regulatory guidance
+// - Interactive global regulator table with search & region filter
+// - Color-coded timeline
+// - CMC checklist & dossier sections
+// - Print/export friendly
+// - Tailwind-based styling
+// - Credit to creators
+
+export default function NanomedRegulatoryApp() {
+  const [regionFilter, setRegionFilter] = useState('All');
+  const [search, setSearch] = useState('');
+
+  // Timeline data (enhanced, color-coded)
+  const timelineData = [
+    { date: '29-Nov-2000', event: 'Initial NDAC approval for metastatic ovarian carcinoma', type: 'approval', link: 'https://cdsco.gov.in/' },
+    { date: '19-Aug-2008', event: 'Additional indication approval', type: 'approval', link: 'https://cdsco.gov.in/' },
+    { date: '2011-2012', event: 'NDAC requested further Indian clinical data', type: 'request', link: 'https://cdsco.gov.in/ndac-meetings' },
+    { date: '2013 onwards', event: 'Generics approval and international approvals referenced', type: 'generics', link: 'https://pubmed.ncbi.nlm.nih.gov/' }
+  ];
+
+  // Sort timeline by date (earliest first)
+  const parseDate = (d) => {
+    try { return new Date(d); } catch { return new Date(8640000000000000); }
+  };
+  const sortedTimeline = [...timelineData].sort((a, b) => parseDate(a.date) - parseDate(b.date));
+
+  // Global regulator table data
+  const regulators = [
+    { id: 1, regulator: 'CDSCO (India)', region: 'India', keyDocuments: ['DBT/ICMR Guidelines for Evaluation of Nanopharmaceuticals (2019)'], typicalTimeline: 'Variable (6-18+ months)', clinicalTrialsNotes: 'Follow New Drugs & Clinical Trials rules; early engagement with CDSCO/Subject Expert Committee recommended; include nanomaterial characterization, stability, PK/PD, immunotoxicity.' },
+    { id: 2, regulator: 'FDA (USA)', region: 'US', keyDocuments: ['FDA guidance on nanotechnology'], typicalTimeline: '12-24 months', clinicalTrialsNotes: 'Focus on CQAs, detailed characterization and comparability, immunogenicity, and ADME for nanoformulations.' },
+    { id: 3, regulator: 'EMA (EU)', region: 'EU', keyDocuments: ['EMA reflection papers and CHMP guidance on nanomedicines'], typicalTimeline: '12-30 months', clinicalTrialsNotes: 'Expect in-depth physicochemical characterization and bridging data when formulation changes.' },
+    { id: 4, regulator: 'SAHPRA (South Africa)', region: 'Africa', keyDocuments: ['Clinical guidance & harmonised ZaZiBoNa experience'], typicalTimeline: 'Variable; aligned with ICH/WHO', clinicalTrialsNotes: 'Follow local CT guidelines and prepare for additional safety queries for nanomaterials.' },
+    { id: 5, regulator: 'ANVISA (Brazil)', region: 'LATAM', keyDocuments: ['ANVISA product-specific guidance, ICH-aligned pathways'], typicalTimeline: 'Variable; dossier dependent', clinicalTrialsNotes: 'Early scientific advice meetings advised; CMC and toxicology packages scrutinized.' }
+  ];
+
+  const filteredRegulators = regulators.filter(d => 
+    (regionFilter === 'All' || d.region === regionFilter) && 
+    (d.regulator.toLowerCase().includes(search.toLowerCase()) || d.keyDocuments.join(' ').toLowerCase().includes(search.toLowerCase()))
+  );
+
+  // Regulatory checklist
+  const checklistItems = {
+    "Quality / CMC": [
+      "Product description & composition per vial",
+      "Manufacturing process flow & critical steps",
+      "CQAs: size distribution, surface charge, encapsulation efficiency, release profile, sterility/pyrogenicity, residual solvents",
+      "Analytical methods & validation",
+      "In-process controls & scale-up strategy"
+    ],
+    "Nonclinical / Preclinical": [
+      "Repeat-dose toxicity studies",
+      "Genotoxicity (if required)",
+      "Local tolerance and immunotoxicity (complement activation, cytokine release)",
+      "Safety pharmacology"
+    ],
+    "Clinical Development": [
+      "First-in-human with sentinel dosing",
+      "PK/PD sampling & bioaccumulation assessment",
+      "Immune marker monitoring and organ function follow-up"
+    ],
+    "Comparability & Lifecycle": [
+      "Bridging studies for manufacturing/formulation changes",
+      "Stepwise approach for nanosimilars (analytical → nonclinical → clinical)"
+    ],
+    "Regulatory Engagement": [
+      "Pre-submission meetings with CDSCO/DBT",
+      "Briefing package with CMC, nonclinical plan, and clinical outline",
+      "Agreement on endpoints, safety monitoring, and bridging studies"
+    ]
+  };
+
+  // CMC table
+  const cmcData = [
+    { section: 'Drug substance', content: 'Source, synthesis/purification, characterization, impurities', link: 'https://example.com/drug-substance-report' },
+    { section: 'Lipid components', content: 'Supplier certificates, identity, purity, fatty acid composition', link: 'https://example.com/lipid-certificate' },
+    { section: 'Formulation', content: 'Composition per vial, excipients, PEG type and content', link: 'https://example.com/formulation-data' },
+    { section: 'Manufacturing steps', content: 'Emulsification/shearing parameters, sterilization, filtration', link: 'https://example.com/manufacturing-protocol' }
+  ];
+
+  // Color coding for timeline events
+  const timelineColor = (type) => {
+    switch(type){
+      case 'approval': return 'bg-green-100';
+      case 'request': return 'bg-orange-100';
+      case 'generics': return 'bg-blue-100';
+      default: return 'bg-gray-100';
+    }
+  };
+
+  return (
+    <div className="min-h-screen p-6 bg-slate-50 text-slate-900">
+      <header className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-extrabold mb-2">Nanomedicine Regulatory Guide — India & Global Comparison</h1>
+        <p className="text-sm opacity-80 mb-6">Practical guidance for product development, clinical trials, and pathway decision-making. Includes interactive comparator and export/print friendly policy text.</p>
+      </header>
+
+      <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <section className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm">
+          <h2 className="text-xl font-semibold mb-3">Executive Summary</h2>
+          <p className="mb-3">This document synthesises Indian (CDSCO/DBT) recommendations and global regulatory expectations for nanopharmaceuticals...</p>
+
+          <h3 className="font-semibold mt-4">Timeline of Key Regulatory Events</h3>
+          <ul className="mb-4">
+            {sortedTimeline.map((t,i) => (
+              <li key={i} className={`p-2 my-1 rounded-md ${timelineColor(t.type)}`}>
+                <span className="font-semibold">{t.date}: </span>
+                <span>{t.event} </span>
+                {t.link && <a href={t.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline ml-1">[ref]</a>}
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="font-semibold mt-4">Regulatory Checklist</h3>
+          {Object.entries(checklistItems).map(([section, items]) => (
+            <div key={section} className="mb-4">
+              <h4 className="font-semibold">{section}</h4>
+              <ul className="list-disc list-inside">
+                {items.map((it,i) => <li key={i}>{it}</li>)}
+              </ul>
+            </div>
+          ))}
+
+          <h3 className="font-semibold mt-4">CMC Table</h3>
+          <table className="table-auto border-collapse border border-gray-300 w-full text-sm mb-6">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="border border-gray-300 p-2">Section</th>
+                <th className="border border-gray-300 p-2">Content</th>
+                <th className="border border-gray-300 p-2">Reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cmcData.map((row,i) => (
+                <tr key={i} className="odd:bg-gray-50">
+                  <td className="border border-gray-300 p-2">{row.section}</td>
+                  <td className="border border-gray-300 p-2">{row.content}</td>
+                  <td className="border border-gray-300 p-2">
+                    <a href={row.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">{row.link}</a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <aside className="bg-white p-6 rounded-2xl shadow-sm">
+          <div className="mb-4">
+            <label className="block text-xs font-medium mb-1">Filter by region</label>
+            <select value={regionFilter} onChange={e => setRegionFilter(e.target.value)} className="w-full p-2 rounded-md border">
+              <option>All</option>
+              <option>India</option>
+              <option>US</option>
+              <option>EU</option>
+              <option>Africa</option>
+              <option>LATAM</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-xs font-medium mb-1">Search regulators / docs</label>
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="search..." className="w-full p-2 rounded-md border" />
+          </div>
+
+          <h4 className="font-semibold mb-2">Regulator Quick List</h4>
+          <ul className="space-y-2">
+            {filteredRegulators.map(d => (
+              <li key={d.id} className="p-2 border rounded-md">
+                <div className="font-semibold">{d.regulator}</div>
+                <div className="text-xs opacity-80">{d.keyDocuments.join(' • ')}</div>
+                <div className="text-sm mt-1">Timeline: {d.typicalTimeline}</div>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-6">
+            <button onClick={() => window.print()} className="w-full py-2 rounded-xl bg-slate-800 text-white">Print / Export</button>
+          </div>
+        </aside>
+      </main>
+
+      <footer className="max-w-7xl mx-auto mt-8 text-sm opacity-80 flex flex-col items-center">
+        <p>Notes: Adapt content with live regulatory links and your project-specific data. Timeline, checklist, and CMC tables can be updated dynamically.</p>
+        <p className="mt-2">App created by: <span className="font-semibold">Khan Gulrez Shagufa Fazal Ahmed</span></p>
+      </footer>
+    </div>
+  );
+}
+
+
